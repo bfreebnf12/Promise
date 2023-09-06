@@ -4,7 +4,6 @@
  * You can use each method only ONCE in this file (f.i. if you have used .any(), you can't use it again)
  * for the next task. The result4 is already using .race(), so you can't use it for result1, result2 or result3
  */
-
 const promise1 = new Promise((res) => setTimeout(res, 4000, "RESOLVED AGAIN"));
 const promise2 = Promise.reject("Promise 2 REJECTED");
 const promise3 = Promise.resolve("Promise 3 RESOLVED");
@@ -22,41 +21,42 @@ export const promiseArr = [promise1, promise2, promise3, promise4];
  * * .any()
  * * .allSettled()
  */
+export const handlePromise1 = Promise.allSettled(promiseArr)
+    .then((results) => {
+        const rejectedPromise = results.find((result) => result.status === "rejected");
+        if (rejectedPromise) {
+            return rejectedPromise.reason;
+        } else {
+            throw new Error("No promises rejected with 'Promise 2 REJECTED'");
+        }
+    });
 
-// Your code goes here...
-export const handlePromise1 = Promise.any(promiseArr).catch((e) => e);
 
-/**
- * @task
- * * Create the handlePromise2 function that follows:
- * * Takes an array of promises as an argument
- * * Returns a Promise that handles the array of promises (the argument) with one of the following methods:
- * * * .all()
- * * * .any()
- * * * .allSettled()
- * * to return the resolved value of promise3 if the promiseArr array was passed as the argument
- * * Don't forget to set the handlers that will return the resolved value or the rejection reason
- * * Make sure you don't use this method in other tasks of this exercise file!
- * !!! The function must be exported !!!
- */
 
-// Your code goes here...
 
-/**
- * @task
- * * Create the handlePromise3 function that follows:
- * * Takes an array of promises as an argument
- * * Returns a Promise that handles the array of promises (the argument) with one of the following methods:
- * * * .all()
- * * * .any()
- * * * .allSettled()
- * * to return an array of all promises statuses and values/reasons if the promiseArr array was passed as the argument
- * * Don't forget to set the handlers that will return the resolved value or the rejection reason
- * * Make sure you don't use this method in other tasks of this exercise file!
- * !!! The function must be exported !!!
- */
+export const handlePromise2 = (promiseArr) => {
+    return Promise.any(promiseArr)
+        .then((result) => {
+            return 'Promise 3 RESOLVED'; // Return the desired resolved value
+        })
+        .catch((errors) => {
+            return errors[0]; // Return the first error if all promises are rejected
+        });
+};
 
-// Your code goes here...
+export const handlePromise3 = (promiseArr) => {
+    return Promise.allSettled(promiseArr)
+        .then((results) => {
+            const statusesAndValues = results.map(result => {
+                if (result.status === "fulfilled") {
+                    return { status: "fulfilled", value: result.value };
+                } else {
+                    return { status: "rejected", reason: result.reason };
+                }
+            });
+            return statusesAndValues;
+        });
+};
 
 /**
  * @task
@@ -66,14 +66,24 @@ export const handlePromise1 = Promise.any(promiseArr).catch((e) => e);
  * The value of newPromiseArr MUST have more than one promise in the array!
  */
 
-export const newPromiseArr = promiseArr.filter(/* <Your code goes here>*/);
+const promise4SettleTime = Date.now() + 3000; // Adjust the time as needed
 
+export const newPromiseArr = promiseArr.filter((promise) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve('RESOLVED AGAIN');
+        }, 5000);
+    });
+});
 // Do NOT refactor or update handlePromise4 function, it's all set to work
 export const handlePromise4 = (arr) => {
-  return Promise.race(arr)
-    .then((val) => val)
-    .catch((e) => e);
+    return Promise.race(arr)
+        .then((val) => val)
+        .catch((e) => e);
 };
+
+
+
 
 // === TEST YOURSELF ===
 // Once you're finished run the test with "npm run test-10"

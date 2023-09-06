@@ -12,9 +12,15 @@
  */
 
 export function iterate(arg) {
-  // Your code goes here...
-  
-}
+    // Your code goes here...
+    console.log(arg);
+    return arg + 1;
+};
+
+
+const result = iterate(5);
+console.log(result);
+
 
 /**
  * @task
@@ -23,9 +29,17 @@ export function iterate(arg) {
  */
 
 export function alwaysThrows() {
-  // Your code goes here...
+    // Your code goes here...
+    throw new Error("OH NOES");
+};
 
+
+try {
+    alwaysThrows();
+} catch (error) {
+    console.error(error.message);
 }
+
 
 /**
  * @task
@@ -36,10 +50,14 @@ export function alwaysThrows() {
  * The function must be exported
  */
 
-export function onReject() {
-  // Your code goes here...
-
-}
+export function onReject(arg) {
+    // Your code goes here...
+    if (typeof arg === 'object' && arg !== null && 'message' in arg) {
+        console.log(arg.message); // Log the error object message property value
+    } else {
+        console.log(arg); // Log the argument value in any other case
+    }
+};
 
 /**
  * @task
@@ -63,7 +81,19 @@ export function onReject() {
  */
 
 // Your code goes here...
-export const promise;
+export const promise = Promise.resolve()
+    .then(() => iterate(1))
+    .then((result) => iterate(result))
+    .then((result) => iterate(result))
+    .then((result) => iterate(result))
+    .then((result) => iterate(result))
+    .then(() => alwaysThrows())
+    .then((result) => iterate(result))
+    .then((result) => iterate(result))
+    .then((result) => iterate(result))
+    .then((result) => iterate(result))
+    .then((result) => iterate(result))
+    .catch(onReject);
 
 
 
