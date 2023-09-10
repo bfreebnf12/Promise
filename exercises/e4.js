@@ -22,16 +22,13 @@ const second = (val) => {
 
 // Refactor the following code...
 export const handlePromise = first()
-    .then((val) => {
-        return second(val); // Chain the second promise inside the first .then()
-    })
+    .then((val) => second(val)) // Chain the second promise inside the first .then()
     .then((val) => {
         console.log(val);
         return val;
     })
-    .catch((error) => {
-        console.error("Error:", error); // Handle any errors that occurred during the promise chain
-    });
+    .catch((error) => console.error("Error:", error)); // Handle any errors that occurred during the promise chain
+
 
 // === TEST YOURSELF ===
 // Once you're finished run the test with "npm run test-4"

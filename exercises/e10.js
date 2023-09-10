@@ -21,15 +21,9 @@ export const promiseArr = [promise1, promise2, promise3, promise4];
  * * .any()
  * * .allSettled()
  */
-export const handlePromise1 = Promise.allSettled(promiseArr)
-    .then((results) => {
-        const rejectedPromise = results.find((result) => result.status === "rejected");
-        if (rejectedPromise) {
-            return rejectedPromise.reason;
-        } else {
-            throw new Error("No promises rejected with 'Promise 2 REJECTED'");
-        }
-    });
+export const handlePromise1 = Promise.all(promiseArr)
+    .then((val) => val)
+    .catch((err) => err);
 
 
 
@@ -37,10 +31,10 @@ export const handlePromise1 = Promise.allSettled(promiseArr)
 export const handlePromise2 = (promiseArr) => {
     return Promise.any(promiseArr)
         .then((result) => {
-            return 'Promise 3 RESOLVED'; // Return the desired resolved value
+            return result; // Return the desired resolved value
         })
         .catch((errors) => {
-            return errors[0]; // Return the first error if all promises are rejected
+            return errors; // Return the first error if all promises are rejected
         });
 };
 
