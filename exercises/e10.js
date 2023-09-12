@@ -40,15 +40,11 @@ export const handlePromise2 = (promiseArr) => {
 
 export const handlePromise3 = (promiseArr) => {
     return Promise.allSettled(promiseArr)
-        .then((results) => {
-            const statusesAndValues = results.map(result => {
-                if (result.status === "fulfilled") {
-                    return { status: "fulfilled", value: result.value };
-                } else {
-                    return { status: "rejected", reason: result.reason };
-                }
-            });
-            return statusesAndValues;
+        .then((result) => {
+            return result;
+        })
+        .catch((errors) => {
+            return errors;
         });
 };
 
@@ -60,14 +56,10 @@ export const handlePromise3 = (promiseArr) => {
  * The value of newPromiseArr MUST have more than one promise in the array!
  */
 
-const promise4SettleTime = Date.now() + 3000; // Adjust the time as needed
+
 
 export const newPromiseArr = promiseArr.filter((promise) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve('RESOLVED AGAIN');
-        }, 5000);
-    });
+    return promise !== promise2 && promise3;
 });
 // Do NOT refactor or update handlePromise4 function, it's all set to work
 export const handlePromise4 = (arr) => {
